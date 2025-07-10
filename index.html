@@ -8,7 +8,8 @@
     iframe { width:100%; height:80vh; border:none; margin-top:20px; }
     .btn { display:inline-block; padding:12px 24px; background:violet; color:black; border-radius:8px; text-decoration:none; margin-top:10px; }
     .message { background:#222; padding:14px; margin:16px; border-radius:12px; }
-    a { color:violet; font-weight:bold; text-decoration:none; }
+    input, select { padding:10px; width:85%; border-radius:8px; border:none; margin:5px 0; }
+    button { padding:10px 20px; background:violet; color:black; border:none; border-radius:8px; margin-top:10px; }
   </style>
 </head>
 <body>
@@ -21,21 +22,59 @@
 
   <div class="message">
     💰 <b>Offer Wall: Complete Any Offer & Earn Coins</b><br><br>
-
     🔹 <b>Offer 1:</b> Install App & Earn <b>10 Coins</b><br>
     👉 <a href="https://singingfiles.com/show.php?l=0&u=2421068&id=70740" target="_blank">📲 Start Offer 1</a><br><br>
 
-    🔹 <b>Offer 2:</b> Sign Up / Survey & Earn <b>8 Coins</b><br>
+    🔹 <b>Offer 2:</b> Survey & Earn <b>8 Coins</b><br>
     👉 <a href="https://singingfiles.com/show.php?l=0&u=2421068&id=70069" target="_blank">📝 Start Offer 2</a><br><br>
 
     🔹 <b>Offer 3:</b> Bonus Offer & Earn <b>5 Coins</b><br>
-    👉 <a href="https://singingfiles.com/show.php?l=0&u=2421068&id=58609&tracking_id=" target="_blank">🎁 Start Offer 3</a><br><br>
+    👉 <a href="https://singingfiles.com/show.php?l=0&u=2421068&id=58609&tracking_id=" target="_blank">🎁 Start Offer 3</a>
+  </div>
 
-    📤 After completing any offer, send screenshot on Telegram to get coins.
+  <div class="message">
+    <h3>📩 Claim Your Coins</h3>
+    <input type="text" id="tgid" placeholder="Enter @Telegram username">
+    <select id="task">
+      <option value="">-- Select Task Completed --</option>
+      <option>Joined Telegram</option>
+      <option>Offer 1</option>
+      <option>Offer 2</option>
+      <option>Offer 3</option>
+    </select>
+    <button onclick="submitTask()">✅ Submit</button>
+    <p id="result" style="color:lime; margin-top:10px;"></p>
   </div>
 
   <iframe src="https://typebot.co/embed/my-typebot-1-gwciurj"></iframe>
+  <a href="https://claimzone.github.io" class="btn">🔙 Back to ClaimZone</a>
 
-  <a href="https://legendsarena.github.io" class="btn">🔙 Back to ClaimZone</a>
+  <script>
+    function submitTask() {
+      const username = document.getElementById("tgid").value.trim();
+      const task = document.getElementById("task").value;
+      const result = document.getElementById("result");
+
+      if (!username || !task) {
+        result.innerText = "❌ Please enter Telegram ID and select a task.";
+        return;
+      }
+
+      fetch("https://script.google.com/macros/s/AKfycbz_EsHtbPeYV6VpM0vDmxzi6ETjzNCB1apNoxCh0w9qlgbq4iAAZIBekHJ3ckYidRWt/exec", {
+        method: "POST",
+        body: JSON.stringify({ username, task }),
+        headers: { "Content-Type": "application/json" }
+      })
+      .then(res => res.text())
+      .then(data => {
+        result.innerText = "✅ Task submitted! Coins will be credited soon.";
+        document.getElementById("tgid").value = "";
+        document.getElementById("task").value = "";
+      })
+      .catch(err => {
+        result.innerText = "❌ Error submitting. Try again later.";
+      });
+    }
+  </script>
 </body>
 </html>
